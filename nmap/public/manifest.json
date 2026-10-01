@@ -16,7 +16,8 @@
   "documentation": "https://github.com/xchwarze/frieren-modules/tree/master/nmap#readme",
   "license": "LGPL-3.0-or-later",
   "guestType": [
-    "OpenWrt"
+    "OpenWrt",
+    "Linux"
   ],
   "dependencies": [
     "nmap"

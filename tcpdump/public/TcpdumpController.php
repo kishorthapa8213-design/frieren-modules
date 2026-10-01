@@ -21,6 +21,16 @@ class TcpdumpController extends \frieren\core\Controller
     private $pcapDirectory = '/root/.tcpdump';
     private $logPath = '/tmp/fm-tcpdump.log';
 
+    public function __construct($request, $moduleName)
+    {
+        if (\DeviceConfig::getSystemFamily() === 'Linux') {
+            $this->pcapDirectory = \DeviceConfig::getDataRootFolder() . '/tcpdump';
+            @mkdir($this->pcapDirectory, 0700, true);
+        }
+
+        parent::__construct($request, $moduleName);
+    }
+
     protected $endpointRoutes = [
         //'checkModuleDependencies' => true,
         'installModuleDependencies' => true,
@@ -175,6 +185,10 @@ class TcpdumpController extends \frieren\core\Controller
      */
     private function getToolVariant()
     {
+        if (\DeviceConfig::getSystemFamily() === 'Linux') {
+            return OpenWrtHelper::commandExists('tcpdump') ? 'full' : null;
+        }
+
         $installed = OpenWrtHelper::exec('/bin/opkg list-installed');
         if ($installed === false) {
             return null;
@@ -220,6 +234,10 @@ class TcpdumpController extends \frieren\core\Controller
 
     private function presetsPath()
     {
+        if (\DeviceConfig::getSystemFamily() === 'Linux') {
+            return \DeviceConfig::getDataRootFolder() . '/tcpdump/' . self::PRESETS_FILE;
+        }
+
         return self::getModulePath() . '/' . self::PRESETS_FILE;
     }
 

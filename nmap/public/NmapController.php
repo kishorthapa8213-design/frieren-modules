@@ -47,6 +47,16 @@ class NmapController extends \frieren\core\Controller
     const MAX_PRESETS = 50;
     const PRESET_NAME_REGEX = '/^[A-Za-z0-9 ._+()-]{1,40}$/';
 
+    public function __construct($request, $moduleName)
+    {
+        if (\DeviceConfig::getSystemFamily() === 'Linux') {
+            $this->nmapDirectory = \DeviceConfig::getDataRootFolder() . '/nmap';
+            @mkdir($this->nmapDirectory, 0700, true);
+        }
+
+        parent::__construct($request, $moduleName);
+    }
+
     public function startScan()
     {
         if (!isset($this->request['command'])) {
@@ -271,6 +281,10 @@ class NmapController extends \frieren\core\Controller
 
     private function presetsPath()
     {
+        if (\DeviceConfig::getSystemFamily() === 'Linux') {
+            return \DeviceConfig::getDataRootFolder() . '/nmap/' . self::PRESETS_FILE;
+        }
+
         return self::getModulePath() . '/' . self::PRESETS_FILE;
     }
 

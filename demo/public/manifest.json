@@ -16,7 +16,8 @@
   "documentation": "https://github.com/xchwarze/frieren-modules/tree/master/demo#readme",
   "license": "LGPL-3.0-or-later",
   "guestType": [
-    "OpenWrt"
+    "OpenWrt",
+    "Linux"
   ],
   "dependencies": [],
   "minPanelVersion": "1.0.0",

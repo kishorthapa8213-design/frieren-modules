@@ -32,6 +32,16 @@ class HcxdumptoolController extends \frieren\core\Controller
     private $bpfPath = '/tmp/fm-hcxdumptool-bpf.txt';
     private $runScriptPath = '/tmp/fm-hcxdumptool-run.sh';
 
+    public function __construct($request, $moduleName)
+    {
+        if (\DeviceConfig::getSystemFamily() === 'Linux') {
+            $this->pcapDirectory = \DeviceConfig::getDataRootFolder() . '/hcxdumptool';
+            @mkdir($this->pcapDirectory, 0700, true);
+        }
+
+        parent::__construct($request, $moduleName);
+    }
+
     protected $endpointRoutes = [
         //'checkModuleDependencies' => true,
         'installModuleDependencies' => true,
@@ -435,6 +445,10 @@ class HcxdumptoolController extends \frieren\core\Controller
 
     private function presetsPath()
     {
+        if (\DeviceConfig::getSystemFamily() === 'Linux') {
+            return \DeviceConfig::getDataRootFolder() . '/hcxdumptool/' . self::PRESETS_FILE;
+        }
+
         return self::getModulePath() . '/' . self::PRESETS_FILE;
     }
 

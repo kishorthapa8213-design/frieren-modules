@@ -17,7 +17,8 @@
   "documentation": "https://github.com/xchwarze/frieren-modules/tree/master/wpaonlinecrack#readme",
   "license": "LGPL-3.0-or-later",
   "guestType": [
-    "OpenWrt"
+    "OpenWrt",
+    "Linux"
   ],
   "dependencies": [
     "curl",

@@ -105,7 +105,10 @@ class WpaonlinecrackController extends \frieren\core\Controller
      */
     protected function getScanFolders()
     {
-        $folders = array_merge([self::DEFAULT_SCAN_PATH], self::getConfiguredPaths());
+        $defaultPath = \DeviceConfig::getSystemFamily() === 'Linux'
+            ? \DeviceConfig::getDataRootFolder() . '/hcxdumptool'
+            : self::DEFAULT_SCAN_PATH;
+        $folders = array_merge([$defaultPath], self::getConfiguredPaths());
 
         $dirs = [];
         foreach (array_unique($folders) as $folder) {
