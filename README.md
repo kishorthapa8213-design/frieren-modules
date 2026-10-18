@@ -25,6 +25,19 @@ Refer to the individual module directories for specific installation instruction
 
 Each module comes with its own set of documentation. Please read through the `README.md` file in the respective module directory for detailed usage instructions.
 
+### Install Linux-compatible modules into Frieren
+
+With this repository and the Frieren `linux-port` checkout cloned side by side, install all non-system modules that declare Linux support:
+
+```bash
+node scripts/install-linux-modules.mjs --dry-run
+node scripts/install-linux-modules.mjs
+```
+
+The script builds every matching module in production mode and copies its `dist/` contents to `/opt/frieren/frieren-back/modules/<module-name>`. Production mode retains the uncompressed UMD bundle required for Frieren's direct module serving. The build disables the optional bundle-analyzer server so installation continues through all modules and deployment. It expects Node.js 22+, Corepack/Yarn, and the Frieren frontend sources at `../frieren/frieren-front/src`. Use `--frontend-src` or `FRIEREN_FRONTEND_SRC` if your Frieren checkout is elsewhere, and `--target-dir` or `FRIEREN_MODULES_DIR` to override the install directory. It requests `sudo` only when the target is not writable.
+
+The script skips modules that do not list `Linux` in `public/manifest.json`; it does not install system packages or publish modules to the remote catalog. Existing module data is not deleted. Review each module's requirements and Linux support before using it.
+
 ## Contributing
 
 Contributions are welcome! If you have developed a module using the `frieren-module-template` and wish to share it, please follow these steps:
@@ -40,4 +53,3 @@ All modules in this repository are distributed under the LGPL-3.0-only License, 
 ## Acknowledgments
 
 A special thanks to all contributors who have developed and maintained the modules in this repository, enhancing the capabilities of the Frieren ecosystem.
-
